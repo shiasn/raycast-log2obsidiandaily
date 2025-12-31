@@ -1,10 +1,32 @@
-# Log 2 Obsidian Daily
+# Obsidian: log 2 daily
 
-向 Obsidian 日记中插入片段。
+[中文](README.zh.md)
 
-## 配置
+Append quick snippets into your Obsidian daily note from Raycast.
 
-- 在 Raycast 命令偏好里填入 Obsidian Vault 路径（根目录）。
-- 命令会读取 Vault 下的 `.obsidian/daily-notes.json`，根据其中的 `folder` 和 `format` 计算当日的日记路径。`format` 支持 `YYYY`、`YY`、`MM/M`、`DD/D`，包含 `/` 时会生成多级文件夹（例如 `YYYY/MM/DD`）。
-- 可设置插入的目标标题，默认 `## 临时便签`。
-- 可配置记录模式：`Callout`（默认，引用块形式）或 `简洁文本`（格式为 `**HH:MM**` 换行后内容）。
+## Features
+
+- Reads `.obsidian/daily-notes.json` (also tolerates `.obsiidan/daily-notes.json`) to locate the daily note using `folder` and `format`.
+- Supports date formats like `YYYY-MM-DD` or `YYYY/MM/DD`; tokens `YYYY/YY/MM/M/DD/D` are supported and `/` creates nested folders.
+- Two record modes: `Callout` (quoted block with time) or `Plain text` (`**HH:MM**` followed by your input).
+- Inserts under a configurable heading (default `## Temp Notes`); will trigger Obsidian to create the note if it’s missing.
+
+## Setup
+
+1. Install deps: `pnpm install`
+2. Run in dev mode with hot reload: `pnpm dev` (keeps the command available under Raycast’s “Development” group)
+3. In Raycast command preferences, set:
+   - `Obsidian Vault Path` (vault root)
+   - `Target Heading` (optional, default `## Temp Notes`)
+   - `Record Mode` (`Callout` or `Plain text`)
+
+## Usage
+
+1. Keep `pnpm dev` running.
+2. Open the command in Raycast, type your snippet, press `Cmd+Enter` to submit.
+3. Optional: set a keyboard shortcut in Raycast (Settings → Extensions → your command → Set Hotkey) for instant capture.
+
+## Notes
+
+- If the daily note does not exist, the command opens Obsidian via URI to create it.
+- Multi-line input is preserved. Callout mode prepends `> ` to each line; plain mode inserts as-is.
