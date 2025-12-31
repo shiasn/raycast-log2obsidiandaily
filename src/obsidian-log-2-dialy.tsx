@@ -118,7 +118,7 @@ export default function Command() {
       }
 
       // 3. If file exists -> insert silently
-      let fileContent = fs.readFileSync(absoluteFilePath, "utf8");
+      const fileContent = fs.readFileSync(absoluteFilePath, "utf8");
 
       const quotedContent = rawContent
         .split("\n")
@@ -142,7 +142,7 @@ export default function Command() {
         const nextHeadingRegex = /\n## /g;
         const nextHeadingMatch = nextHeadingRegex.exec(afterHeading);
 
-        let insertIndex = nextHeadingMatch
+        const insertIndex = nextHeadingMatch
           ? headingIndex + targetHeading.length + nextHeadingMatch.index
           : fileContent.length;
 
