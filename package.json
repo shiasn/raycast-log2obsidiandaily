@@ -1,8 +1,8 @@
 {
   "$schema": "https://www.raycast.com/schemas/extension.json",
-  "name": "shiasn-obsidian-daily-log",
-  "title": "shiasn: Obsidian Daily Log",
-  "description": "向 Obsidian 日记中插入片段",
+  "name": "obsidian-log-2-dialy",
+  "title": "Obsidian: log 2 daily",
+  "description": "Append snippets into your Obsidian daily note",
   "icon": "extension-icon.png",
   "author": "shiasn",
   "platforms": [
@@ -16,36 +16,36 @@
   "license": "MIT",
   "commands": [
     {
-      "name": "shiasn-obsidian-daily-log",
-      "title": "shiasn: Log 2 obsidian daily",
-      "description": "向 Obsidian 日记中插入片段",
+      "name": "obsidian-log-2-dialy",
+      "title": "Obsidian: log 2 daily",
+      "description": "Append snippets into your Obsidian daily note",
       "mode": "view",
       "preferences": [
         {
           "name": "vaultPath",
-          "title": "Obsidian Vault 路径",
-          "description": "选择你的 Obsidian Vault 根目录",
+          "title": "Obsidian Vault Path",
+          "description": "Select your Obsidian Vault root directory",
           "type": "directory",
           "required": true
         },
         {
           "name": "targetHeading",
-          "title": "目标标题",
-          "description": "插入到该标题下（默认 ## 临时便签）",
+          "title": "Target Heading",
+          "description": "Insert below this heading (default ## Temp Notes)",
           "type": "textfield",
           "required": false,
-          "default": "## 临时便签"
+          "default": "## Temp Notes"
         },
         {
           "name": "recordMode",
-          "title": "记录模式",
-          "description": "选择插入格式（callout 或简洁文本）",
+          "title": "Record Mode",
+          "description": "Choose insertion format (callout or plain text)",
           "type": "dropdown",
           "required": false,
           "default": "callout",
           "data": [
-            { "title": "Callout（带引用）", "value": "callout" },
-            { "title": "简洁文本", "value": "plain" }
+            { "title": "Callout (quoted)", "value": "callout" },
+            { "title": "Plain text", "value": "plain" }
           ]
         }
       ]

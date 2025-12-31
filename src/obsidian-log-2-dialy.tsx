@@ -30,7 +30,7 @@ function readDailyNotesConfig(vaultRoot: string): DailyNotesConfig | null {
             const raw = fs.readFileSync(fullPath, "utf8");
             return JSON.parse(raw) as DailyNotesConfig;
         } catch (error) {
-            console.error("读取 daily-notes.json 失败", error);
+            console.error("Failed to read daily-notes.json", error);
             return null;
         }
     }
@@ -75,19 +75,19 @@ export default function Command() {
         const rawContent = values.content;
 
         if (!rawContent.trim()) {
-            await showToast(Toast.Style.Failure, "内容不能为空");
+            await showToast(Toast.Style.Failure, "Content cannot be empty");
             return;
         }
 
         const preferences = getPreferenceValues<Preferences>();
         const vaultRoot = preferences.vaultPath.trim().replace(/\/$/, "");
-        const targetHeading = preferences.targetHeading?.trim() || "## 临时便签";
+        const targetHeading = preferences.targetHeading?.trim() || "## Temp Notes";
         const recordMode: "callout" | "plain" = preferences.recordMode === "plain" ? "plain" : "callout";
 
         const dailyNotesConfig = readDailyNotesConfig(vaultRoot);
 
         if (!dailyNotesConfig) {
-            await showToast(Toast.Style.Failure, "找不到 daily-notes.json", "请检查 Vault 下的 .obsidian/daily-notes.json 是否存在且可读");
+            await showToast(Toast.Style.Failure, "daily-notes.json not found", "Please ensure .obsidian/daily-notes.json exists and is readable");
             return;
         }
 
@@ -97,23 +97,23 @@ export default function Command() {
         const { absoluteFilePath, targetDir, uriRelativePath } = buildDailyNotePath(vaultRoot, dailyNotesConfig, now);
 
         try {
-            // 1. 确保目录存在
+            // 1. Ensure target directory exists
             if (!fs.existsSync(targetDir)) {
                 fs.mkdirSync(targetDir, { recursive: true });
             }
 
-            // 2. 如果文件不存在 -> 唤起 Obsidian 创建
+            // 2. If file is missing -> prompt Obsidian to create it
             if (!fs.existsSync(absoluteFilePath)) {
                 const encodedPath = encodeURIComponent(uriRelativePath);
                 const uri = `obsidian://new?file=${encodedPath}&vault=${encodeURIComponent(path.basename(vaultRoot))}`;
 
                 await open(uri);
-                await showToast(Toast.Style.Success, "已唤起 Obsidian 创建日记");
+                await showToast(Toast.Style.Success, "Opened Obsidian to create daily note");
                 await closeMainWindow();
                 return;
             }
 
-            // 3. 如果文件存在 -> 静默插入
+            // 3. If file exists -> insert silently
             let fileContent = fs.readFileSync(absoluteFilePath, 'utf8');
 
             const quotedContent = rawContent
@@ -128,12 +128,12 @@ export default function Command() {
             const headingIndex = fileContent.indexOf(targetHeading);
 
             if (headingIndex === -1) {
-                // A: 追加
+                // A: Append section if heading is missing
                 const prefix = fileContent.endsWith('\n') ? '\n' : '\n\n';
                 const appendText = `${prefix}${targetHeading}\n${newEntry}`;
                 fs.appendFileSync(absoluteFilePath, appendText, 'utf8');
             } else {
-                // B: 插入
+                // B: Insert under existing heading
                 const afterHeading = fileContent.slice(headingIndex + targetHeading.length);
                 const nextHeadingRegex = /\n## /g;
                 const nextHeadingMatch = nextHeadingRegex.exec(afterHeading);
@@ -150,14 +150,13 @@ export default function Command() {
                 fs.writeFileSync(absoluteFilePath, newFileContent, 'utf8');
             }
 
-            await showToast(Toast.Style.Success, "✅ 已记录");
+            await showToast(Toast.Style.Success, "Saved");
             setTimeout(async () => {
                 await closeMainWindow();
             }, 500);
 
         } catch (e) {
-            // 打印详细错误到 Toast，方便调试
-            await showToast(Toast.Style.Failure, "错误", e instanceof Error ? e.message : String(e));
+            await showToast(Toast.Style.Failure, "Error", e instanceof Error ? e.message : String(e));
         }
     }
 
@@ -171,8 +170,8 @@ export default function Command() {
         >
             <Form.TextArea
                 id="content"
-                title="便签内容"
-                placeholder="支持多行文本，按 Cmd+Enter 提交"
+                title="Content"
+                placeholder="Multi-line text supported. Press Cmd+Enter to submit."
                 enableMarkdown={true}
             />
         </Form>
