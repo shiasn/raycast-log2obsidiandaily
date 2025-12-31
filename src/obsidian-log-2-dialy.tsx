@@ -80,7 +80,7 @@ export default function Command() {
         }
 
         const preferences = getPreferenceValues<Preferences>();
-        const vaultRoot = preferences.vaultPath.trim().replace(/\/$/, "");
+        const vaultRoot = preferences.vaultPath.trim().replace(/[\\/]+$/, "");
         const targetHeading = preferences.targetHeading?.trim() || "## Temp Notes";
         const recordMode: "callout" | "plain" = preferences.recordMode === "plain" ? "plain" : "callout";
 
