@@ -1,0 +1,74 @@
+{
+  "$schema": "https://www.raycast.com/schemas/extension.json",
+  "name": "shiasn-obsidian-daily-log",
+  "title": "shiasn: Obsidian Daily Log",
+  "description": "向 Obsidian 日记中插入片段",
+  "icon": "extension-icon.png",
+  "author": "shiasn",
+  "platforms": [
+    "macOS",
+    "Windows"
+  ],
+  "type": "module",
+  "categories": [
+    "Applications"
+  ],
+  "license": "MIT",
+  "commands": [
+    {
+      "name": "shiasn-obsidian-daily-log",
+      "title": "shiasn: Log 2 obsidian daily",
+      "description": "向 Obsidian 日记中插入片段",
+      "mode": "view",
+      "preferences": [
+        {
+          "name": "vaultPath",
+          "title": "Obsidian Vault 路径",
+          "description": "选择你的 Obsidian Vault 根目录",
+          "type": "directory",
+          "required": true
+        },
+        {
+          "name": "targetHeading",
+          "title": "目标标题",
+          "description": "插入到该标题下（默认 ## 临时便签）",
+          "type": "textfield",
+          "required": false,
+          "default": "## 临时便签"
+        },
+        {
+          "name": "recordMode",
+          "title": "记录模式",
+          "description": "选择插入格式（callout 或简洁文本）",
+          "type": "dropdown",
+          "required": false,
+          "default": "callout",
+          "data": [
+            { "title": "Callout（带引用）", "value": "callout" },
+            { "title": "简洁文本", "value": "plain" }
+          ]
+        }
+      ]
+    }
+  ],
+  "dependencies": {
+    "@raycast/api": "^1.104.1",
+    "@raycast/utils": "^1.17.0"
+  },
+  "devDependencies": {
+    "@raycast/eslint-config": "^2.0.4",
+    "@types/node": "22.13.10",
+    "@types/react": "19.0.10",
+    "eslint": "^9.22.0",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.2"
+  },
+  "scripts": {
+    "build": "ray build",
+    "dev": "ray develop",
+    "fix-lint": "ray lint --fix",
+    "lint": "ray lint",
+    "prepublishOnly": "echo \"\\n\\nIt seems like you are trying to publish the Raycast extension to npm.\\n\\nIf you did intend to publish it to npm, remove the \\`prepublishOnly\\` script and rerun \\`npm publish\\` again.\\nIf you wanted to publish it to the Raycast Store instead, use \\`npm run publish\\` instead.\\n\\n\" && exit 1",
+    "publish": "npx @raycast/api@latest publish"
+  }
+}
